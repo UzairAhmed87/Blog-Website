@@ -1,19 +1,19 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { logOut } from '../../store/authSlice'
-import {authService} from "../../appwrite/auth"
+import authService from '../../appwrite/auth'
 
-export function Logout() {
+export function Logoutbtn() {
     const dispatch = useDispatch()
     const logoutHandler = ()=>{
-        authService.logOut().then(()=>{
+        authService.logout().then(()=>{
             dispatch(logOut())
         })
     }
 
     return (
         <>
-           <button>logout</button> 
+           <button className='inline-block px-6 py-2 duration-200 hover:bg-blue-100 rounded-full' onClick={logoutHandler}>logout</button> 
         </>
     )
 }

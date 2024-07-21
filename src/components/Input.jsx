@@ -8,19 +8,19 @@ const Input = React.forwardRef(function Input({
     ...props
 },ref) {
     const id = useId()
-    return 
-    <div className="w-full">
+    return (
+    <div className="w-full ">
         {label && <label className="inline-block mb-1 pb-1" htmlFor={id}>
             {label}
             </label>}
             <input 
             type={type}
-            className={`${className}`}
+            className={`px-3 mx-3 py-2 rounded-lg bg-white text-black outline-none focus:bg-gray-50 focus:border-black duration-200 border border-gray-200 w-full${className}`}
             ref={ref}
             {...props}
             id={id}
             />
-    </div>
+    </div>)
 })
 
 export default Input

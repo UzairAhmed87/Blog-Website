@@ -1,35 +1,40 @@
 import { React, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import login from "../store/authSlice";
+
 import { Button, Input, Logo } from "./index";
 import { useDispatch } from "react-redux";
 import authService from "../appwrite/auth";
 import { useForm } from "react-hook-form";
+import { login as authLogin } from "../store/authSlice";
 
-export function Login() {
+
+export default function Login() {
+
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { register, handleSubmit } = useForm();
-  const { error, setError } = useState(null);
+  const  [error, setError]  = useState(null);
 
   const login = async (data) => {
-    setError("");
+    setError(null);
     try {
       const session = await authService.login(data);
       if (session) {
         const userData = await authService.getCurrentUser();
         if (userData) {
-          dispatch(login(userData));
+          dispatch(authLogin(userData));
           navigate("/");
         }
       }
     } catch (error) {
+      console.log("account not found");
       setError(error.message);
+      
     }
   };
 
   return (
-    <div className="flex items-center justify-center w-full">
+    <div className="flex items-center justify-center w-full ">
       <div
         className={`mx-auto w-full max-w-lg bg-gray-100 rounded-xl p-10 border border-black/10`}
       >
@@ -52,8 +57,8 @@ export function Login() {
         </p>
         {error && <p className="text-red-600 mt-8 text-center">{error}</p>}
         <form onSubmit={handleSubmit(login)}>
-          <div>
-            <Input
+          <div className="space-y-5">
+            <Input 
               type="email"
               label="Email:"
               placeholder="Enter your Email"
@@ -66,7 +71,7 @@ export function Login() {
                 },
               })}
             />
-            <Input
+            <Input 
               label="Password:"
               type="password"
               placeholder="Enter your password"
@@ -74,10 +79,10 @@ export function Login() {
                 required: true,
               })}
             />
-            <button
+            <Button 
             type="submit"
             className="w-full"
-            >Sign In</button>
+            >Sign In</Button>
           </div>
         </form>
       </div>

@@ -13,7 +13,7 @@ export class AuthService {
   }
 
   async createAccount({ email, password, name }) {
-    try {
+    try {console.log("Creating ACCOUNT with: ",{email , name});
       const userAccount = await this.account.create(
         ID.unique(),
         email,
@@ -27,26 +27,29 @@ export class AuthService {
         return userAccount;
       }
     } catch (error) {
+      console.log("Error creating account:",error);
       throw error;
     }
   }
 
   async login({ email, password }) {
     try {
-      return await this.account.createEmailPasswordSession(email, password);
+      return await this.account.createEmailPasswordSession(email, password)
+      
     } catch (error) {
+      console.log("account not formed");
       throw error;
     }
   }
 
-  async getCurrentUser(){
+  async getCurrentUser() {
     try {
-        return await this.account.get()
+        return await this.account.get();
     } catch (error) {
-        throw error
+        console.error('Error getting current user:', error);
+        throw error;
     }
-    return null;
-  }
+}
 
   async logout(){
     try {

@@ -4,24 +4,24 @@ import service from "../../appwrite/conf";
 
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, RTE } from "../index";
+import { Input, Button, RTE , Select } from "../index";
 
-export function PostForm({ post }) {
+export default function PostForm({ post }) {
   const { register, handleSubmit, watch, setValue, getValues, control } =
     useForm({
       defaultValues: {
         title: post?.title || "",
-        slug: post?.slug || "",
+        slug: post?.$id || "",
         content: post?.content || "",
         status: post?.status || "active",
       },
     });
   const navigate = useNavigate();
-  const userData = useSelector((state) => state.user.userData);
+  const userData = useSelector((state) => state.auth.userData);
 
   const Submit = async (data) => {
     if (post) {
-      const file = data.image[0] ? service.uploadFile(data.image[0]) : null;
+      const file = data.image[0] ? await service.uploadFile(data.image[0]) : null;
       if (file) {
         service.deleteFile(post.featuredImage);
       }
@@ -31,9 +31,11 @@ export function PostForm({ post }) {
       });
       if (dbPost) {
         navigate(`/post/${dbPost.$id}`);
+        
       }
     } else {
       const file = await service.uploadFile(data.image[0]);
+      
 
       if (file) {
         const fileId = file.$id;
@@ -43,6 +45,7 @@ export function PostForm({ post }) {
           userId: userData.$id,
         });
         if (dbPost) {
+          
           navigate(`/post/${dbPost.$id}`);
         }
       }
@@ -54,16 +57,15 @@ export function PostForm({ post }) {
       return value
         .trim()
         .toLowerCase()
-        .replace(/^[a-zA-Z\d\s]+/g, "-")
+        .replace(/[^a-zA-Z\d]+/g, "-")
         .replace(/\s/g, "-");
-
     return "";
   }, []);
 
   useEffect(() => {
     const subscription = watch((value, { name }) => {
       if (name == "title") {
-        setValue("slug", slugTransform(value));
+        setValue("slug", slugTransform(value.title),{shouldValidate : true});
       }
     });
 
@@ -75,10 +77,10 @@ export function PostForm({ post }) {
   return (
     <form onSubmit={handleSubmit(Submit)} className="flex flex-wrap">
       <div className="w-2/3 px-2">
-        <Input
+        <Input 
           label="Title :"
           placeholder="Title"
-          className="mb-4"
+          className="mb-4 "
           {...register("title", { required: true })}
         />
         <Input
@@ -92,7 +94,7 @@ export function PostForm({ post }) {
             });
           }}
         />
-        <RTE
+        <RTE className="py-3"
           label="Content :"
           name="content"
           control={control}
@@ -100,17 +102,17 @@ export function PostForm({ post }) {
         />
       </div>
       <div className="w-1/3 px-2">
-        <Input
+        <Input 
           label="Featured Image :"
           type="file"
-          className="mb-4"
+          className="mt-4"
           accept="image/png, image/jpg, image/jpeg, image/gif"
           {...register("image", { required: !post })}
         />
         {post && (
           <div className="w-full mb-4">
             <img
-              src={appwriteService.getFilePreview(post.featuredImage)}
+              src={service.getFilePreview(post.featuredImage)}
               alt={post.title}
               className="rounded-lg"
             />

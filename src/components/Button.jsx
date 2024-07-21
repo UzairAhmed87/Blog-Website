@@ -3,7 +3,7 @@ import React from 'react'
 export default function Button({
 children,
 type = "button",
-bgColor = "bg-blue-600",
+bgColor = "bg-red-700",
 textColor = "text-white",
 className = "",
 ...props
@@ -12,7 +12,7 @@ className = "",
 
     return (
         <>
-           <button className={`px-4 py-2 ${className} ${bgColor} ${textColor}`}{...props}>{children}</button> 
+           <button className={`px-4 py-2 rounded-xl hover:scale-105 transition-all ${className} ${bgColor} ${textColor}`}{...props}>{children}</button> 
         </>
     )
 }

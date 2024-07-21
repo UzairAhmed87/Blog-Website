@@ -114,11 +114,16 @@ try {
 }
   }
 
-  getFilePreview(fileId){
-return this.bucket.getFilePreview(
-  config.appWriteBucketId,
-  fileId
-)
+   getFilePreview(fileId) {
+    try {
+      return this.bucket.getFilePreview(
+        config.appWriteBucketId,
+        fileId
+      );
+    } catch (error) {
+      console.error('Error getting file preview:', error);
+      throw error;
+    }
   }
 }
 
