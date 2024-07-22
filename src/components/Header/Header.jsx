@@ -46,12 +46,12 @@ export function Header() {
                             <Logo/>
                             </Link>
                         </div>
-<ul className='flex items-center ml-auto'>
+<ul className='flex items-center max-md:flex-col ml-auto'>
     {navItem.map((item)=>
     item.active ? (
         <li key={item.name} >
            
-           <NavLink to={item.slug} className={({isActive})=>`text-xl font-semibold inline-bock px-6 py-2 duration-200 hover:bg-blue-100 rounded-full ${isActive ? "text-red-700" :"text-black"}`}> 
+           <NavLink to={item.slug} className={({isActive})=>`text-xl font-semibold inline-bock px-6 py-2 duration-200 hover:bg-blue-100 rounded-full  ${isActive ? "text-red-700" :"text-black"}`}> 
            
                 {item.name}
                 

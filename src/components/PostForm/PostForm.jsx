@@ -105,7 +105,7 @@ export default function PostForm({ post }) {
         <Input 
           label="Featured Image :"
           type="file"
-          className="mt-4"
+          
           accept="image/png, image/jpg, image/jpeg, image/gif"
           {...register("image", { required: !post })}
         />
